@@ -2,7 +2,7 @@ import json
 import subprocess
 from pathlib import Path
 
-mcp_path = Path(".cursor/mcp.json1")
+mcp_path = Path(".cursor/mcp.json")
 
 if not mcp_path.exists():
     print(f"File {mcp_path} not found")
