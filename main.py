@@ -1,2 +1,2 @@
 # Dummy PT project file
-print('Hello from Ps')
+print('Hello from PTT')
