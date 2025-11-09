@@ -1,37 +1,29 @@
-# Dummy PT project file
 import json
 import subprocess
 from pathlib import Path
 
-mcp_path = Path(".cursor/mcp.json")
+mcp_path = Path(".cursor/rules/mcp.json")
 
 if not mcp_path.exists():
-    print("File .well-known/mcp.json not found")
+    print(f"File {mcp_path} not found")
     exit(1)
 
 with open(mcp_path, "r", encoding="utf-8") as f:
     mcp = json.load(f)
 
-cmd = None
-
-if "command" in mcp:
-    cmd = mcp["command"]
-elif "entry" in mcp:
-    entry = mcp["entry"]
-    runtime = mcp.get("runtime", "")
-    if runtime:
-        cmd = f"{runtime} {entry}"
-    else:
-        if entry.endswith(".js"):
-            cmd = f"node {entry}"
-        elif entry.endswith(".py"):
-            cmd = f"python {entry}"
-        else:
-            cmd = entry
-
-if not cmd:
-    print("mcp.json missing 'command' or 'entry'")
+servers = mcp.get("mcpServers", {})
+if not servers:
+    print("No mcpServers found in mcp.json")
     exit(1)
 
-print(f"Running: {cmd}")
-subprocess.run(cmd, shell=True)
+name, config = next(iter(servers.items()))
+cmd = config.get("command")
+args = config.get("args", [])
+
+if not cmd:
+    print("No command found in mcp.json")
+    exit(1)
+
+full_cmd = [cmd] + args
+print(f"Running: {' '.join(full_cmd)}")
+subprocess.run(full_cmd)
